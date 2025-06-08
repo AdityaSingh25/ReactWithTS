@@ -1,98 +1,31 @@
-function App() {
-  let name: string;
-  let age: number;
-  let isStudent: boolean;
-  let hobbies: string[];
-  // tuple
-  let role: [number, string];
-  role = [2, "Adi"];
+import React, { useState } from "react";
+import "./App.css";
+import InputField from "./components/InputField";
+import type { Todo } from "./model";
+import TodoList from "./components/TodoList";
 
-  // -----------------------------------------------------
-  // to define types of objects
+const App: React.FC = () => {
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  //we have 2 ways
-
-  // 1st way
-  let person: Object;
-
-  // 2nd way
-  //use type or interface
-
-  type Person = {
-    name: string;
-    age?: number;
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault(); //to prevent page reload
+    if (todo) {
+      setTodos([...todos, { id: Date.now(), todo: todo, isDone: false }]);
+      setTodo(""); //empty the input box
+    }
   };
-  let pperson: Person = {
-    name: "Aditya",
-    age: 12,
-  };
-
-  let lotsOfPeople: Person[];
-
-  let agee: number | string; // can be a number or string
-  const newLocal = (agee = 7);
-
-  // instead of any use unknown
-
-  let a: any;
-  let b: unknown;
-
-  // -----------------------------------------------------
-  //Functions
-
-  printName: Function;
-  function printName(name: string) {
-    console.log(name);
-  }
-  printName("Adiyya");
-
-  // 2nd method
-
-  let printNamee: (name: string) => void; // as it returns noting it just prints. We can use never also.(name:string)=>never is a function never returns anyting
-  // void means it can return undefined.
-
-  // deep dive in Aliases
-
-  type Personn = {
-    name: string;
-    age: number;
-  };
-  interface Personnn {
-    name: string;
-    age: string;
-  }
-
-  // but whats the difference between type and interface?
-
-  type X = {
-    a: string;
-    b: number;
-  };
-  type Y = {
-    c: string;
-    d: number;
-  };
-
-  type Z = X &
-    Y & {
-      e: string;
-      f: number;
-    };
-
-  let z: Z = {
-    a: "Adi",
-    b: 1,
-    c: "cosmo",
-    d: 23,
-    e: "sw",
-    f: 23,
-  };
+  console.log(todos);
 
   return (
     <>
-      <div>Hello World!!</div>
+      <div className="App">
+        <span className="heading">Taskify</span>
+        <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+        <TodoList todos={todos} setTodos={setTodos} />
+      </div>
     </>
   );
-}
+};
 
 export default App;
